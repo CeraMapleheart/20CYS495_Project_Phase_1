@@ -1,0 +1,29 @@
+1. python3 backupv7.1.py repository create --path <destination-path>
+       Create keyfile.key with salted hash and the user provided password and store in <destination-path>.
+       repo_state.json file is created and connection to repo (boolean) and dest path is set. (loaded during backup)
+
+2. python3 backupv7.1.py repository connect --path <destination-path>
+       Used in future case when two or more destination repositories are there.
+
+3. python3 backupv7.1.py backup create <source-path>
+       Backup is taken from <source-path> to <destination-path> (loaded from repo_state.json).
+       Supports file compression (gzip, bzip2, or none). Compression method can be selected via user input.
+       Users can specify file inclusion and exclusion patterns during the backup process.
+
+4. python3 backupv7.1.py backup list
+       List the root hash ID (hash of all backup files in destination), used for backup of all file or to list files in it.
+
+5. python3 backupv7.1.py ls -l <root-hash-value>
+       Lists all the files backed up for the specific root hash.
+
+6. python3 backupv7.1.py retrieve <hash-id> <output-path>
+       Retrieves the file with the specified hash ID from the repository and saves it to the specified output path.
+       Verifies the integrity of the retrieved file against the original hash.
+
+7. python3 backupv7.1.py apply_retention <backup_dir> <retention_days>
+       Applies the retention policy by deleting backup files older than the specified number of retention days.
+
+8. python3 backupv7.1.py schedule_backups <source_path> <schedule_time> <schedule_frequency>
+       Schedules automated backups based on the user-specified time and frequency.
+       Schedule time should be in HH:MM format (24-hour clock).
+       Schedule frequency can be 'daily', 'weekly', or 'monthly'.
