@@ -95,7 +95,6 @@ python3 -m backup_tool.main schedule --source /path/to/source --time 02:00
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-```
 
 ### `requirements.txt`
 
