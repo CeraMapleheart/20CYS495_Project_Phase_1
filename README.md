@@ -18,7 +18,7 @@ This backup tool provides secure and efficient backup and retrieval of files usi
 1. Clone the repository:
 
     ```sh
-    git clone https://github.com/your-repo/backup_tool.git
+    git clone https://github.com/CeraMapleheart/backup_tool.git
     cd backup_tool
     ```
 
