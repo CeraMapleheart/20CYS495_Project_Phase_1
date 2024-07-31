@@ -35,23 +35,37 @@ This backup tool provides secure and efficient backup and retrieval of files usi
 ```sh
 python3 -m backup_tool.main repository_create --path <destination-path>
 ```
-
+Example: 
+```sh
+python3 -m backup_tool.main repository_create --path /path/to/repository
+```
 ### Connect to a Repository
 
 ```sh
 python3 -m backup_tool.main repository_connect --path <destination-path>
 ```
+Example: 
 
-### Create a Backup
+```sh
+python3 -m backup_tool.main repository_connect --path /path/to/repository
+```
+### Create a Backup (with Exclusions and Compression)
 
 ```sh
 python3 -m backup_tool.main backup_create --source <source-path> [--exclusions <pattern1> <pattern2> ...] [--compression <type>]
 ```
-
+Example: 
+```sh
+python3 -m backup_tool.main backup_create --source /path/to/source --exclusions '*.tmp' '*.log' --compression gzip
+```
 ### Retrieve Files
 
 ```sh
 python3 -m backup_tool.main retrieve --root-hash <root-hash> --destination <destination-path>
+```
+Example: 
+```sh
+python3 -m backup_tool.main retrieve --root-hash <root-hash> --destination /path/to/destination
 ```
 
 ### Schedule a Backup
@@ -59,38 +73,12 @@ python3 -m backup_tool.main retrieve --root-hash <root-hash> --destination <dest
 ```sh
 python3 -m backup_tool.main schedule --source <source-path> [--exclusions <pattern1> <pattern2> ...] [--compression <type>] --time <HH:MM>
 ```
-
-## Examples
-
-### Create a Repository
-
-```sh
-python3 -m backup_tool.main repository_create --path /path/to/repository
-```
-
-### Connect to a Repository
-
-```sh
-python3 -m backup_tool.main repository_connect --path /path/to/repository
-```
-
-### Create a Backup with Exclusions and Compression
-
-```sh
-python3 -m backup_tool.main backup_create --source /path/to/source --exclusions '*.tmp' '*.log' --compression gzip
-```
-
-### Retrieve Files from a Backup
-
-```sh
-python3 -m backup_tool.main retrieve --root-hash <root-hash> --destination /path/to/destination
-```
-
-### Schedule a Daily Backup at 2 AM
-
+Example: 
 ```sh
 python3 -m backup_tool.main schedule --source /path/to/source --time 02:00
 ```
+
+
 
 ## License
 
