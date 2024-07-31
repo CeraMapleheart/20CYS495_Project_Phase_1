@@ -17,6 +17,111 @@ This backup tool provides secure and efficient backup and retrieval of files usi
 
 1. Clone the repository:
 
+    ```sh
+    git clone https://github.com/your-repo/backup_tool.git
+    cd backup_tool
+    ```
+
+2. Install dependencies:
+
+    ```sh
+    pip install -r requirements.txt
+    ```
+
+## Usage
+
+### Create a Repository
+
 ```sh
-git clone https://github.com/your-repo/backup_tool.git
-cd backup_tool
+python3 -m backup_tool.main repository_create --path <destination-path>
+```
+
+### Connect to a Repository
+
+```sh
+python3 -m backup_tool.main repository_connect --path <destination-path>
+```
+
+### Create a Backup
+
+```sh
+python3 -m backup_tool.main backup_create --source <source-path> [--exclusions <pattern1> <pattern2> ...] [--compression <type>]
+```
+
+### Retrieve Files
+
+```sh
+python3 -m backup_tool.main retrieve --root-hash <root-hash> --destination <destination-path>
+```
+
+### Schedule a Backup
+
+```sh
+python3 -m backup_tool.main schedule --source <source-path> [--exclusions <pattern1> <pattern2> ...] [--compression <type>] --time <HH:MM>
+```
+
+## Examples
+
+### Create a Repository
+
+```sh
+python3 -m backup_tool.main repository_create --path /path/to/repository
+```
+
+### Connect to a Repository
+
+```sh
+python3 -m backup_tool.main repository_connect --path /path/to/repository
+```
+
+### Create a Backup with Exclusions and Compression
+
+```sh
+python3 -m backup_tool.main backup_create --source /path/to/source --exclusions '*.tmp' '*.log' --compression gzip
+```
+
+### Retrieve Files from a Backup
+
+```sh
+python3 -m backup_tool.main retrieve --root-hash <root-hash> --destination /path/to/destination
+```
+
+### Schedule a Daily Backup at 2 AM
+
+```sh
+python3 -m backup_tool.main schedule --source /path/to/source --time 02:00
+```
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+```
+
+### `requirements.txt`
+
+```plaintext
+cryptography
+schedule
+```
+
+### `setup.py`
+
+```python
+from setuptools import setup, find_packages
+
+setup(
+    name="backup_tool",
+    version="1.0.0",
+    packages=find_packages(),
+    install_requires=[
+        "cryptography",
+        "schedule"
+    ],
+    entry_points={
+        "console_scripts": [
+            "backup_tool = backup_tool.main:main"
+        ]
+    },
+)
+```
+
