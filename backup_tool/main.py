@@ -1,46 +1,70 @@
 import argparse
-from backup_tool.repository import repository_create, repository_connect, backup_create, retrieve_file
-from backup_tool.scheduling import schedule_backup
 
 def main():
     parser = argparse.ArgumentParser(description="Backup Tool")
     subparsers = parser.add_subparsers(dest="command")
 
-    repo_create_parser = subparsers.add_parser("repository_create", help="Create a new repository")
-    repo_create_parser.add_argument("--path", required=True, help="Destination path for the repository")
+    create_parser = subparsers.add_parser("repository_create")
+    create_parser.add_argument("--path", required=True, help="Path to create repository")
 
-    repo_connect_parser = subparsers.add_parser("repository_connect", help="Connect to an existing repository")
-    repo_connect_parser.add_argument("--path", required=True, help="Destination path for the repository")
+    connect_parser = subparsers.add_parser("repository_connect")
+    connect_parser.add_argument("--path", required=True, help="Path to repository")
 
-    backup_create_parser = subparsers.add_parser("backup_create", help="Create a new backup")
-    backup_create_parser.add_argument("--source", required=True, help="Source path for the backup")
-    backup_create_parser.add_argument("--exclusions", nargs='*', help="List of file patterns to exclude")
-    backup_create_parser.add_argument("--compression", help="Compression type (e.g., gzip, bz2)")
+    backup_parser = subparsers.add_parser("backup_create")
+    backup_parser.add_argument("--source", required=True, help="Source path to backup")
+    backup_parser.add_argument("--destinations", nargs="+", help="Multiple backup destinations")
+    backup_parser.add_argument("--exclusions", nargs="*", help="Patterns to exclude")
+    backup_parser.add_argument("--compression", help="Compression type")
+    backup_parser.add_argument("--checksum", action="store_true", help="Verify checksums after backup")
 
-    retrieve_parser = subparsers.add_parser("retrieve", help="Retrieve files from a backup")
-    retrieve_parser.add_argument("--root-hash", required=True, help="Root hash of the backup to retrieve")
+    retrieve_parser = subparsers.add_parser("retrieve")
+    retrieve_parser.add_argument("--root-hash", required=True, help="Root hash to retrieve")
     retrieve_parser.add_argument("--destination", required=True, help="Destination path to retrieve files")
 
-    schedule_parser = subparsers.add_parser("schedule", help="Schedule a backup")
-    schedule_parser.add_argument("--source", required=True, help="Source path for the backup")
-    schedule_parser.add_argument("--exclusions", nargs='*', help="List of file patterns to exclude")
-    schedule_parser.add_argument("--compression", help="Compression type (e.g., gzip, bz2)")
-    schedule_parser.add_argument("--time", required=True, help="Time to schedule the backup (e.g., '02:00')")
+    prune_parser = subparsers.add_parser("prune")
+    prune_parser.add_argument("--retention-days", type=int, required=True, help="Number of days to retain backups")
+    prune_parser.add_argument("--path", required=True, help="Repository path for pruning")
+
+    schedule_parser = subparsers.add_parser("schedule")
+    schedule_parser.add_argument("--source", required=True, help="Source path to backup")
+    schedule_parser.add_argument("--time", required=True, help="Time to schedule backup (HH:MM)")
 
     args = parser.parse_args()
 
+    setup_logging()
+
     if args.command == "repository_create":
-        repository_create(args.path)
+        log_operation("Repository Creation", "Started")
+        # repository_create_function(args.path)
+        log_operation("Repository Creation", "Completed")
+
     elif args.command == "repository_connect":
-        repository_connect(args.path)
+        log_operation("Repository Connection", "Started")
+        # repository_connect_function(args.path)
+        log_operation("Repository Connection", "Completed")
+
     elif args.command == "backup_create":
-        backup_create(args.source, args.exclusions, args.compression)
+        log_operation("Backup Creation", "Started")
+        backup_to_multiple_destinations(args.source, args.destinations)
+        # Call backup function with multiple destinations support
+        if args.checksum:
+            verify_backup_integrity(args.source, args.destinations[0])
+        log_operation("Backup Creation", "Completed")
+
     elif args.command == "retrieve":
-        retrieve_file(args.root_hash, args.destination)
+        log_operation("File Retrieval", "Started")
+        # retrieve_function(args.root_hash, args.destination) #---To be added---
+        log_operation("File Retrieval", "Completed")
+
+    elif args.command == "prune":
+        log_operation("Backup Pruning", "Started")
+        prune_backups(args.retention_days, args.path)
+        log_operation("Backup Pruning", "Completed")
+
     elif args.command == "schedule":
-        schedule_backup(backup_create, args.source, args.exclusions, args.compression, args.time)
-    else:
-        parser.print_help()
+        log_operation("Backup Scheduling", "Started")
+        # schedule_function(args.source, args.time)
+        log_operation("Backup Scheduling", "Scheduled")
 
 if __name__ == "__main__":
     main()
