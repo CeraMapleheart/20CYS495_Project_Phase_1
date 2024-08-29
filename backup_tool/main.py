@@ -58,7 +58,7 @@ def main():
 
     elif args.command == "prune":
         log_operation("Backup Pruning", "Started")
-        prune_backups(args.retention_days, args.path)
+        prune(args.retention_days, args.path)
         log_operation("Backup Pruning", "Completed")
 
     elif args.command == "schedule":
