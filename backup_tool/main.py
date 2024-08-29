@@ -35,7 +35,7 @@ def main():
 
     if args.command == "repository_create":
         log_operation("Repository Creation", "Started")
-        # repository_create_function(args.path)
+        repository_create(args.path)
         log_operation("Repository Creation", "Completed")
 
     elif args.command == "repository_connect":
